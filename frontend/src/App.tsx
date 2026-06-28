@@ -4,6 +4,7 @@ import ThreeCanvas from './components/ThreeCanvas';
 import Navbar from './components/Navbar';
 import ParallaxBackground from './components/ParallaxBackground';
 import MathParticles from './components/MathParticles';
+import ChatBot from './components/ChatBot';
 import { usePointerParallax } from './hooks/usePointerParallax';
 
 // ── Modules ──────────────────────────────────────────────────────────────────
@@ -62,6 +63,9 @@ export default function App() {
 
       {/* Scanline overlay */}
       <div className="absolute inset-0 pointer-events-none moving-scanline z-50 mix-blend-screen opacity-65" />
+
+      {/* ── AI Chatbot — floating on all pages ── */}
+      <ChatBot />
     </div>
   );
 }
