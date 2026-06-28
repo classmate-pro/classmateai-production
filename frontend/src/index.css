@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Custom Neon Cyberpunk Colors */
+  --color-cyber-cyan: #00f0ff;
+  --color-cyber-pink: #ff007f;
+  --color-cyber-purple: #9d00ff;
+  --color-cyber-amber: #ffaa00;
+  --color-cyber-green: #39ff14;
+  --color-cyber-dark: #05050b;
+  --color-cyber-dark-card: rgba(8, 8, 20, 0.75);
+}
+
+/* ── xs breakpoint (475px) ── */
+@media (min-width: 475px) {
+  .xs\:flex-row  { flex-direction: row; }
+  .xs\:w-auto    { width: auto; }
+  .xs\:pt-32     { padding-top: 8rem; }
+  .xs\:max-w-sm  { max-width: 24rem; }
+  .xs\:gap-4     { gap: 1rem; }
+  .xs\:px-4      { padding-left: 1rem; padding-right: 1rem; }
+  .xs\:mx-4      { margin-left: 1rem; margin-right: 1rem; }
+  .xs\:mt-4      { margin-top: 1rem; }
+  .xs\:text-\[10px\] { font-size: 10px; }
+}
+
+/* ── Mobile touch & scroll ── */
+html, body {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  /* Isolate compositing layers at root to avoid repaints propagating up */
+  isolation: isolate;
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+img, video, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Global base typography ── */
+*, *::before, *::after {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4, h5, h6,
+.font-display {
+  font-family: "Outfit", sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.font-mono, code, kbd, pre {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  letter-spacing: 0.02em;
+  font-size: 0.85em;
+}
+
+/* ── Scanline overlay (static — no animation cost) ── */
+.scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 3px,
+    rgba(0, 0, 0, 0.07) 3px,
+    rgba(0, 0, 0, 0.07) 4px
+  );
+}
+
+.glow-cyan {
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5), 0 0 16px rgba(0, 240, 255, 0.2);
+}
+
+.glow-pink {
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.5), 0 0 16px rgba(255, 0, 127, 0.2);
+}
+
+.glow-green {
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.5), 0 0 16px rgba(57, 255, 20, 0.2);
+}
+
+.cyber-panel-clip {
+  clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+}
+
+.cyber-tab-clip {
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+}
+
+/* ── Glass panels — reduced blur radius for GPU savings ── */
+.cyber-border-cyan {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(5, 5, 15, 0.75);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(0, 240, 255, 0.06);
+}
+
+.cyber-border-pink {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(5, 5, 15, 0.75);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(255, 0, 127, 0.06);
+}
+
+.cyber-border-green {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(5, 5, 15, 0.75);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(57, 255, 20, 0.06);
+}
+
+.cyber-border-amber {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(5, 5, 15, 0.75);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(255, 170, 0, 0.06);
+}
+
+.glass-panel {
+  background: rgba(5, 5, 15, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-panel-deep {
+  background: rgba(5, 5, 15, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: rgba(5, 5, 11, 0.9); }
+::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.4); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.7); }
+
+/* ── Moving scanline — simplified, GPU-cheap via transform only ── */
+.moving-scanline {
+  pointer-events: none;
+  /* Use a single thin stripe and animate only transform — compositor-friendly */
+  background: linear-gradient(
+    to bottom,
+    transparent 48%,
+    rgba(0, 240, 255, 0.06) 50%,
+    transparent 52%
+  );
+  background-size: 100% 100%;
+  will-change: transform;
+  animation: moving-scanline-anim 12s linear infinite;
+}
+
+@keyframes moving-scanline-anim {
+  0%   { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+/* ── Remaining animations — promote to GPU layer ── */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+@keyframes shimmer {
+  0%   { opacity: 0.6; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 6px rgba(0, 240, 255, 0.12); }
+  50%       { box-shadow: 0 0 16px rgba(0, 240, 255, 0.28); }
+}
+
+.animate-gradient-shift { animation: gradient-shift 4s ease infinite; }
+.animate-shimmer        { animation: shimmer 3s ease-in-out infinite; }
+.animate-float          { animation: float 6s ease-in-out infinite; }
+.animate-float-delayed  { animation: float 6s ease-in-out 3s infinite; }
+.animate-pulse-glow     { animation: pulse-glow 3s ease-in-out infinite; }
+
+.gradient-text-animate {
+  background: linear-gradient(90deg, #00f0ff, #9d00ff, #ff007f, #00f0ff);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 6s ease infinite;
+}
+
+.animate-spin-slow { animation: spin 10s linear infinite; }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Content sections below the fold: defer rendering ── */
+.landing-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
