@@ -1,25 +1,35 @@
 import { useState } from 'react';
-import { LogIn, CreditCard, MessageSquare, Home, Menu, X } from 'lucide-react';
+import { LogIn, LogOut, CreditCard, MessageSquare, Home, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { AppPage } from '../types';
+import { AppPage } from '../../types';
 
 interface NavbarProps {
   activePage: AppPage;
   onNavigate: (page: AppPage) => void;
 }
 
-const navItems: { page: AppPage; label: string; icon: typeof LogIn }[] = [
-  { page: 'home',    label: 'Home',       icon: Home },
-  { page: 'login',   label: 'Login',      icon: LogIn },
-  { page: 'pricing', label: 'Pricing',    icon: CreditCard },
-  { page: 'contact', label: 'Contact Us', icon: MessageSquare },
-];
-
 export default function Navbar({ activePage, onNavigate }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const isLoggedIn = activePage === 'dashboard' || !!localStorage.getItem('accessToken');
+
+  const items = [
+    { page: 'home' as AppPage, label: 'Home', icon: Home },
+    isLoggedIn
+      ? { page: 'dashboard' as AppPage, label: 'Dashboard', icon: LogIn }
+      : { page: 'login' as AppPage, label: 'Login', icon: LogIn },
+    { page: 'pricing' as AppPage, label: 'Pricing', icon: CreditCard },
+    { page: 'contact' as AppPage, label: 'Contact Us', icon: MessageSquare },
+  ];
+
   const handleNavigate = (page: AppPage) => {
     onNavigate(page);
+    setMenuOpen(false);
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem('accessToken');
+    onNavigate('home');
     setMenuOpen(false);
   };
 
@@ -54,7 +64,7 @@ export default function Navbar({ activePage, onNavigate }: NavbarProps) {
 
           {/* Desktop nav pills */}
           <div className="hidden sm:flex items-center gap-1 bg-black/30 p-1 rounded-full border border-white/10 font-mono text-[10px] md:text-[11px] uppercase tracking-wider">
-            {navItems.map(({ page, label, icon: Icon }) => (
+            {items.map(({ page, label, icon: Icon }) => (
               <button
                 key={page}
                 type="button"
@@ -70,6 +80,17 @@ export default function Navbar({ activePage, onNavigate }: NavbarProps) {
                 <span className="md:hidden">{label === 'Contact Us' ? 'Contact' : label}</span>
               </button>
             ))}
+            {isLoggedIn && (
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="flex items-center gap-1.5 px-2.5 md:px-3 py-2 rounded-full transition-all cursor-pointer whitespace-nowrap text-red-400 hover:text-red-300 hover:bg-white/10"
+              >
+                <LogOut className="w-3 h-3 md:w-3.5 md:h-3.5 shrink-0" />
+                <span className="hidden md:inline">Sign Out</span>
+                <span className="md:hidden">Out</span>
+              </button>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -93,7 +114,7 @@ export default function Navbar({ activePage, onNavigate }: NavbarProps) {
               transition={{ duration: 0.2 }}
               className="sm:hidden mt-2 bg-white/[0.09] backdrop-blur-xl rounded-2xl border border-white/15 shadow-2xl shadow-black/40 overflow-hidden"
             >
-              {navItems.map(({ page, label, icon: Icon }) => (
+              {items.map(({ page, label, icon: Icon }) => (
                 <button
                   key={page}
                   type="button"
@@ -108,6 +129,16 @@ export default function Navbar({ activePage, onNavigate }: NavbarProps) {
                   {label}
                 </button>
               ))}
+              {isLoggedIn && (
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="w-full flex items-center gap-3 px-5 py-3.5 font-mono text-xs uppercase tracking-wider transition-all cursor-pointer text-red-400 hover:text-red-300 hover:bg-white/10 border-t border-white/5"
+                >
+                  <LogOut className="w-4 h-4 shrink-0" />
+                  Sign Out
+                </button>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

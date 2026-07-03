@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { MessageSquare, Send, Check } from 'lucide-react';
-import { CoreSettings } from '../types';
-import { getBgColorClass, getTextColorClass } from '../utils/themeClasses';
+import { CoreSettings } from '../../types';
+import { getBgColorClass, getTextColorClass } from '../../utils/themeClasses';
 
 interface ContactPageProps {
   color: CoreSettings['color'];

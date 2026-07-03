@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CreditCard, Check, Sparkles } from 'lucide-react';
-import { CoreSettings } from '../types';
-import { getBgColorClass, getTextColorClass } from '../utils/themeClasses';
+import { CoreSettings } from '../../types';
+import { getBgColorClass, getTextColorClass } from '../../utils/themeClasses';
 
 interface PricingPageProps {
   color: CoreSettings['color'];

@@ -1,6 +1,6 @@
 import { useEffect, useRef, MutableRefObject } from 'react';
 import * as THREE from 'three';
-import { CoreSettings } from '../types';
+import { CoreSettings } from '../../../types';
 
 interface ThreeCanvasProps {
   settings: CoreSettings;

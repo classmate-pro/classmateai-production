@@ -1,149 +1,135 @@
-class CyberSynth {
+class AudioEngine {
   private ctx: AudioContext | null = null;
-  private humOscillator: OscillatorNode | null = null;
+  private humOsc: OscillatorNode | null = null;
   private humGain: GainNode | null = null;
-  private filter: BiquadFilterNode | null = null;
 
-  private init() {
-    if (this.ctx) {
-      if (this.ctx.state === 'suspended') {
-        this.ctx.resume();
-      }
-      return;
-    }
-    try {
+  private initCtx() {
+    if (!this.ctx && typeof window !== 'undefined') {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
       if (AudioCtx) {
         this.ctx = new AudioCtx();
       }
-    } catch {
-      // Audio Context not supported
+    }
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
     }
   }
 
-  // Brief retro futuristic blip/chirp when typing or clicking
-  playBlip(freq = 800, duration = 0.08, type: OscillatorType = 'sine') {
-    this.init();
-    if (!this.ctx) return;
-
+  playBlip(freq: number, duration: number, type: OscillatorType = 'sine') {
     try {
-      const currentTime = this.ctx.currentTime;
+      this.initCtx();
+      if (!this.ctx) return;
+
       const osc = this.ctx.createOscillator();
-      const gainNode = this.ctx.createGain();
+      const gain = this.ctx.createGain();
 
       osc.type = type;
-      osc.frequency.setValueAtTime(freq, currentTime);
+      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
-      gainNode.gain.setValueAtTime(0.05, currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.0001, currentTime + duration);
+      gain.gain.setValueAtTime(duration > 0.1 ? 0.15 : 0.08, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
 
-      osc.connect(gainNode);
-      gainNode.connect(this.ctx.destination);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
 
-      osc.start(currentTime);
-      osc.stop(currentTime + duration);
-    } catch {
-      // Silently catch audio blocks
+      osc.start();
+      osc.stop(this.ctx.currentTime + duration);
+    } catch (e) {
+      console.warn('Audio playBlip error:', e);
     }
   }
 
-  // Play a descending mechanical sweep for analytical steps
-  playSweep(startFreq = 1600, endFreq = 200, duration = 0.4) {
-    this.init();
-    if (!this.ctx) return;
-
+  toggleAmbientHum(active: boolean) {
     try {
-      const currentTime = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gainNode = this.ctx.createGain();
+      this.initCtx();
+      if (!this.ctx) return;
 
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(startFreq, currentTime);
-      osc.frequency.exponentialRampToValueAtTime(endFreq, currentTime + duration);
+      if (active) {
+        if (this.humOsc) return;
 
-      gainNode.gain.setValueAtTime(0.04, currentTime);
-      gainNode.gain.linearRampToValueAtTime(0.0001, currentTime + duration);
+        this.humOsc = this.ctx.createOscillator();
+        this.humGain = this.ctx.createGain();
 
-      osc.connect(gainNode);
-      gainNode.connect(this.ctx.destination);
+        this.humOsc.type = 'sawtooth';
+        this.humOsc.frequency.setValueAtTime(55, this.ctx.currentTime); // Low hum
 
-      osc.start(currentTime);
-      osc.stop(currentTime + duration);
-    } catch {
-      // Silently catch
-    }
-  }
+        // Filter to make it warm and low-passed
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(120, this.ctx.currentTime);
 
-  // Play success jingle
-  playSuccess() {
-    this.playBlip(600, 0.05, 'triangle');
-    setTimeout(() => this.playBlip(900, 0.05, 'triangle'), 50);
-    setTimeout(() => this.playBlip(1400, 0.12, 'triangle'), 100);
-  }
+        this.humGain.gain.setValueAtTime(0.02, this.ctx.currentTime);
 
-  // Toggle dynamic constant ambient hum representing reactor cores
-  toggleAmbientHum(enabled: boolean) {
-    this.init();
-    if (!this.ctx) return;
+        this.humOsc.connect(filter);
+        filter.connect(this.humGain);
+        this.humGain.connect(this.ctx.destination);
 
-    if (!enabled) {
-      if (this.humOscillator) {
-        try {
-          this.humGain?.gain.linearRampToValueAtTime(0.0001, this.ctx.currentTime + 0.3);
-          const oscRef = this.humOscillator;
-          setTimeout(() => {
-            try { oscRef.stop(); } catch {}
-          }, 400);
-        } catch {}
-        this.humOscillator = null;
-        this.humGain = null;
+        this.humOsc.start();
+      } else {
+        if (this.humOsc) {
+          try {
+            this.humOsc.stop();
+          } catch (e) {}
+          this.humOsc.disconnect();
+          this.humGain?.disconnect();
+          this.humOsc = null;
+          this.humGain = null;
+        }
       }
-      return;
-    }
-
-    if (this.humOscillator) return; // already hummin'
-
-    try {
-      const currentTime = this.ctx.currentTime;
-      this.humOscillator = this.ctx.createOscillator();
-      this.humGain = this.ctx.createGain();
-      this.filter = this.ctx.createBiquadFilter();
-
-      this.humOscillator.type = 'sawtooth';
-      this.humOscillator.frequency.setValueAtTime(55, currentTime); // Low A hum
-
-      // Lowpass filter to muffle sawtooth, forming a heavy mechanical drone
-      this.filter.type = 'lowpass';
-      this.filter.frequency.setValueAtTime(140, currentTime);
-      // subtle modulation
-      this.filter.Q.setValueAtTime(3, currentTime);
-
-      this.humGain.gain.setValueAtTime(0.001, currentTime);
-      this.humGain.gain.linearRampToValueAtTime(0.08, currentTime + 1.0); // fade in
-
-      this.humOscillator.connect(this.filter);
-      this.filter.connect(this.humGain);
-      this.humGain.connect(this.ctx.destination);
-
-      this.humOscillator.start(currentTime);
-    } catch {
-      // Silently handle exceptions
+    } catch (e) {
+      console.warn('Audio toggleAmbientHum error:', e);
     }
   }
 
-  // Update drone hum frequency based on Core speed multipliers
   updateHumTempo(speedMultiplier: number) {
-    if (!this.ctx || !this.humOscillator || !this.filter) return;
     try {
-      const baseFreq = 55 + (speedMultiplier - 1.0) * 10;
-      this.humOscillator.frequency.setTargetAtTime(baseFreq, this.ctx.currentTime, 0.1);
-      
-      const filterFreq = 140 + (speedMultiplier - 1.0) * 30;
-      this.filter.frequency.setTargetAtTime(filterFreq, this.ctx.currentTime, 0.1);
-    } catch {
-      // Ignore audio schedule glitches
+      if (!this.ctx || !this.humOsc) return;
+      // Map speed multiplier to frequency
+      const freq = 55 + (speedMultiplier - 1.0) * 15;
+      this.humOsc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+    } catch (e) {
+      console.warn('Audio updateHumTempo error:', e);
+    }
+  }
+
+  playSuccess() {
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+      // Play a cute rising sci-fi chime
+      this.playBlip(523.25, 0.1, 'sine'); // C5
+      setTimeout(() => this.playBlip(659.25, 0.1, 'sine'), 80); // E5
+      setTimeout(() => this.playBlip(783.99, 0.15, 'sine'), 160); // G5
+      setTimeout(() => this.playBlip(1046.50, 0.25, 'sine'), 240); // C6
+    } catch (e) {
+      console.warn('Audio playSuccess error:', e);
+    }
+  }
+
+  playSweep(startFreq: number, endFreq: number, duration: number) {
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(startFreq, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, this.ctx.currentTime + duration);
+
+      gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start();
+      osc.stop(this.ctx.currentTime + duration);
+    } catch (e) {
+      console.warn('Audio playSweep error:', e);
     }
   }
 }
 
-export const audioEngine = new CyberSynth();
+export const audioEngine = new AudioEngine();

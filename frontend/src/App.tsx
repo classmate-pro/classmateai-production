@@ -1,27 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppPage, CoreSettings } from './types';
-import ThreeCanvas from './components/ThreeCanvas';
-import Navbar from './components/Navbar';
-import ParallaxBackground from './components/ParallaxBackground';
-import MathParticles from './components/MathParticles';
-import ChatBot from './components/ChatBot';
-import { usePointerParallax } from './hooks/usePointerParallax';
 
-// ── Modules ──────────────────────────────────────────────────────────────────
+// ── Shared UI ────────────────────────────────────────────────────────────────
+import Navbar from './shared/components/Navbar';
+import ChatBot from './shared/components/ChatBot';
+
+// ── Canvas Module ────────────────────────────────────────────────────────────
+import { ThreeCanvas, ParallaxBackground, MathParticles } from './modules/canvas';
+
+// ── Feature Modules ──────────────────────────────────────────────────────────
 import LandingModule  from './modules/landing';
 import LoginPage      from './modules/auth/LoginPage';
 import RegisterPage   from './modules/auth/RegisterPage';
+import PricingPage    from './modules/pricing';
+import ContactPage    from './modules/contact';
+import HudDashboard   from './modules/dashboard';
 
-// ── Legacy pages (still in use) ───────────────────────────────────────────────
-import PricingPage from './pages/PricingPage';
-import ContactPage from './pages/ContactPage';
+// ── Hooks & Utils ────────────────────────────────────────────────────────────
+import { usePointerParallax } from './hooks/usePointerParallax';
 
 export default function App() {
   const [activePage, setActivePage] = useState<AppPage>('home');
-  // Refs only — no 60fps re-renders from pointer tracking
   const { parallaxRef } = usePointerParallax();
 
-  const [settings] = useState<CoreSettings>({
+  const [settings, setSettings] = useState<CoreSettings>({
     color: 'cyan',
     geometry: 'torusKnot',
     mode: 'ORBIT',
@@ -33,6 +35,14 @@ export default function App() {
     soundEnabled: false,
   });
 
+  // Check for auto-login on mount
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      setActivePage('dashboard');
+    }
+  }, []);
+
   const isScrollable = activePage === 'home';
 
   return (
@@ -41,12 +51,13 @@ export default function App() {
         isScrollable ? 'min-h-screen' : 'h-screen overflow-hidden'
       }`}
     >
-      {/* These components read from parallaxRef in their own RAF loops — no prop drilling of live values */}
       <ParallaxBackground parallaxRef={parallaxRef} />
       <MathParticles />
       <ThreeCanvas settings={settings} parallaxRef={parallaxRef} />
 
-      <Navbar activePage={activePage} onNavigate={setActivePage} />
+      {activePage !== 'dashboard' && (
+        <Navbar activePage={activePage} onNavigate={setActivePage} />
+      )}
 
       {/* ── Landing ── */}
       {activePage === 'home' && (
@@ -56,15 +67,16 @@ export default function App() {
       {/* ── Auth ── */}
       {activePage === 'login'    && <LoginPage    onNavigate={setActivePage} />}
       {activePage === 'register' && <RegisterPage onNavigate={setActivePage} />}
+      {activePage === 'dashboard' && <HudDashboard settings={settings} setSettings={setSettings} onNavigate={setActivePage} />}
 
-      {/* ── Other pages ── */}
+      {/* ── Core pages (now modules) ── */}
       {activePage === 'pricing' && <PricingPage color={settings.color} />}
       {activePage === 'contact' && <ContactPage color={settings.color} />}
 
       {/* Scanline overlay */}
       <div className="absolute inset-0 pointer-events-none moving-scanline z-50 mix-blend-screen opacity-65" />
 
-      {/* ── AI Chatbot — floating on all pages ── */}
+      {/* AI Chatbot */}
       <ChatBot />
     </div>
   );

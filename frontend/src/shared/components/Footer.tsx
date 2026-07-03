@@ -13,7 +13,7 @@ import {
   Users,
   HeadphonesIcon,
 } from 'lucide-react';
-import { AppPage } from '../types';
+import { AppPage } from '../../types';
 
 interface FooterProps {
   onNavigate: (page: AppPage) => void;

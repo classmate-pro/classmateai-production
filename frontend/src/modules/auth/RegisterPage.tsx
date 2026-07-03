@@ -6,6 +6,8 @@ import { AppPage, RegisterFormData } from '../../types';
 import AuthLayout from './components/AuthLayout';
 import SocialAuthButtons from './components/SocialAuthButtons';
 
+import api from '../../shared/api';
+
 interface RegisterPageProps {
   onNavigate: (page: AppPage) => void;
 }
@@ -38,6 +40,7 @@ export default function RegisterPage({ onNavigate }: RegisterPageProps) {
   const [loading, setLoading]  = useState(false);
   const [success, setSuccess]  = useState(false);
   const [errors,  setErrors]   = useState<Partial<Record<keyof RegisterFormData, string>>>({});
+  const [serverError, setServerError] = useState('');
 
   const set = <K extends keyof RegisterFormData>(field: K, value: RegisterFormData[K]) =>
     setForm(prev => ({ ...prev, [field]: value }));
@@ -54,12 +57,36 @@ export default function RegisterPage({ onNavigate }: RegisterPageProps) {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setServerError('');
     if (!validate()) return;
     setLoading(true);
-    setTimeout(() => { setLoading(false); setSuccess(true); }, 1800);
+    try {
+      const response = await api.post('/register', {
+        name: form.fullName,
+        email: form.email,
+        password: form.password,
+      });
+
+      if (response.data.success) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+        setSuccess(true);
+        setTimeout(() => {
+          onNavigate('dashboard');
+        }, 1200);
+      } else {
+        setServerError(response.data.message || 'Registration failed.');
+      }
+    } catch (err: any) {
+      setServerError(
+        err.response?.data?.message || err.message || 'An error occurred during registration.'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   const strength = getPasswordStrength(form.password);
 
@@ -120,6 +147,16 @@ export default function RegisterPage({ onNavigate }: RegisterPageProps) {
       ) : (
         // ── Registration form ─────────────────────────────────────────────
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {/* Server Error */}
+          {serverError && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400"
+            >
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span className="font-mono text-xs">{serverError}</span>
+            </motion.div>
+          )}
 
           {/* Role toggle */}
           <div className="flex gap-2 p-1 rounded-xl bg-black/30 border border-white/10">
@@ -290,7 +327,7 @@ export default function RegisterPage({ onNavigate }: RegisterPageProps) {
           </motion.button>
 
           {/* Social */}
-          <SocialAuthButtons label="Sign up" />
+          <SocialAuthButtons label="Sign up" onNavigate={onNavigate} />
 
           {/* Login link */}
           <p className="text-center font-mono text-[11px] text-slate-500 mt-1">

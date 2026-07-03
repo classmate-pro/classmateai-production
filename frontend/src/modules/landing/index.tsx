@@ -1,7 +1,8 @@
 // ─── Landing Module: Main Page ───────────────────────────────────────────────
 import { AppPage } from '../../types';
-import Footer from '../../components/Footer';
+import Footer from '../../shared/components/Footer';
 import HeroSection from './components/HeroSection';
+
 import StatsSection from './components/StatsSection';
 import ServicesSection from './components/ServicesSection';
 import GlobalMissionSection from './components/GlobalMissionSection';

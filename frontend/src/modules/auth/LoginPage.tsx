@@ -5,6 +5,7 @@ import { LogIn, Eye, EyeOff, Check, AlertCircle } from 'lucide-react';
 import { AppPage, LoginFormData } from '../../types';
 import AuthLayout from './components/AuthLayout';
 import SocialAuthButtons from './components/SocialAuthButtons';
+import api from '../../shared/api';
 
 interface LoginPageProps {
   onNavigate: (page: AppPage) => void;
@@ -24,7 +25,7 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
   const set = (field: keyof LoginFormData, value: string | boolean) =>
     setForm(prev => ({ ...prev, [field]: value }));
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     if (!form.email || !form.password) {
@@ -32,11 +33,30 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
       return;
     }
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const response = await api.post('/login', {
+        email: form.email,
+        password: form.password,
+      });
+
+      if (response.data.success) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+        setSuccess(true);
+        setTimeout(() => {
+          onNavigate('dashboard');
+        }, 1000);
+      } else {
+        setError(response.data.message || 'Login failed.');
+      }
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || err.message || 'An error occurred during authentication.'
+      );
+    } finally {
       setLoading(false);
-      setSuccess(true);
-    }, 1600);
+    }
   };
+
 
   return (
     <AuthLayout
@@ -168,7 +188,7 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
           </motion.button>
 
           {/* Social */}
-          <SocialAuthButtons label="Sign in" />
+          <SocialAuthButtons label="Sign in" onNavigate={onNavigate} />
 
           {/* Register link */}
           <p className="text-center font-mono text-[11px] text-slate-500 mt-1">

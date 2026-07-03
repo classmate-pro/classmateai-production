@@ -1,8 +1,12 @@
 // ─── Auth Module: Social Auth Buttons ───────────────────────────────────────
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
+import api from '../../../shared/api';
+import { AppPage } from '../../../types';
 
 interface SocialAuthProps {
   label: 'Sign in' | 'Sign up';
+  onNavigate?: (page: AppPage) => void;
 }
 
 // Google SVG icon
@@ -22,7 +26,66 @@ const GithubIcon = () => (
   </svg>
 );
 
-export default function SocialAuthButtons({ label }: SocialAuthProps) {
+export default function SocialAuthButtons({ label, onNavigate }: SocialAuthProps) {
+  const googleBtnRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const clientId = process.env.GOOGLE_CLIENT_ID || 'your_google_client_id_here';
+
+    const initializeGoogleSignIn = () => {
+      const g = (window as any).google;
+      if (g && g.accounts && g.accounts.id) {
+        g.accounts.id.initialize({
+          client_id: clientId,
+          callback: async (response: any) => {
+            try {
+              setError('');
+              const res = await api.post('/google', {
+                idToken: response.credential,
+              });
+
+              if (res.data.success) {
+                localStorage.setItem('accessToken', res.data.accessToken);
+                if (onNavigate) {
+                  onNavigate('dashboard');
+                } else {
+                  window.location.reload();
+                }
+              } else {
+                setError(res.data.message || 'Google Sign-In failed.');
+              }
+            } catch (err: any) {
+              setError(
+                err.response?.data?.message || err.message || 'An error occurred during Google Auth.'
+              );
+            }
+          },
+        });
+
+        if (googleBtnRef.current) {
+          g.accounts.id.renderButton(googleBtnRef.current, {
+            type: 'standard',
+            theme: 'outline',
+            size: 'large',
+            width: googleBtnRef.current.clientWidth || 250,
+          });
+        }
+      }
+    };
+
+    // Retry initialization if script loads late
+    const interval = setInterval(() => {
+      const g = (window as any).google;
+      if (g && g.accounts && g.accounts.id) {
+        initializeGoogleSignIn();
+        clearInterval(interval);
+      }
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, [onNavigate]);
+
   return (
     <div className="space-y-3">
       {/* Divider */}
@@ -32,16 +95,31 @@ export default function SocialAuthButtons({ label }: SocialAuthProps) {
         <div className="flex-1 h-px bg-white/[0.08]" />
       </div>
 
+      {error && (
+        <p className="text-center font-mono text-[10px] text-red-400 mt-1">
+          {error}
+        </p>
+      )}
+
       <div className="grid grid-cols-2 gap-3">
-        <motion.button
-          type="button"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-white text-xs font-mono hover:bg-white/[0.09] hover:border-white/20 transition-all cursor-pointer"
-        >
-          <GoogleIcon />
-          <span>{label} with Google</span>
-        </motion.button>
+        <div className="relative flex items-center justify-center h-[38px]">
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full h-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-white text-xs font-mono hover:bg-white/[0.09] hover:border-white/20 transition-all pointer-events-none"
+          >
+            <GoogleIcon />
+            <span>{label} with Google</span>
+          </motion.button>
+          
+          {/* Overlay official invisible Google Sign-in button */}
+          <div 
+            ref={googleBtnRef} 
+            className="absolute inset-0 opacity-0 cursor-pointer overflow-hidden z-10 [&_iframe]:w-full [&_iframe]:h-full"
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
 
         <motion.button
           type="button"
