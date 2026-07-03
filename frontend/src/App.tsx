@@ -43,7 +43,7 @@ export default function App() {
     }
   }, []);
 
-  const isScrollable = activePage === 'home';
+  const isScrollable = activePage === 'home' || activePage === 'login' || activePage === 'register';
 
   return (
     <div

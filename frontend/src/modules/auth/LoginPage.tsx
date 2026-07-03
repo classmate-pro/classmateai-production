@@ -190,6 +190,8 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
           {/* Social */}
           <SocialAuthButtons label="Sign in" onNavigate={onNavigate} />
 
+
+
           {/* Register link */}
           <p className="text-center font-mono text-[11px] text-slate-500 mt-1">
             No account yet?{' '}

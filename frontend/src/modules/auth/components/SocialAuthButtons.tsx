@@ -101,8 +101,8 @@ export default function SocialAuthButtons({ label, onNavigate }: SocialAuthProps
         </p>
       )}
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="relative flex items-center justify-center h-[38px]">
+      <div className="w-full">
+        <div className="relative flex items-center justify-center h-[38px] w-full">
           <motion.button
             type="button"
             whileHover={{ scale: 1.02 }}
@@ -120,16 +120,6 @@ export default function SocialAuthButtons({ label, onNavigate }: SocialAuthProps
             style={{ width: '100%', height: '100%' }}
           />
         </div>
-
-        <motion.button
-          type="button"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-white text-xs font-mono hover:bg-white/[0.09] hover:border-white/20 transition-all cursor-pointer"
-        >
-          <GithubIcon />
-          <span>{label} with GitHub</span>
-        </motion.button>
       </div>
     </div>
   );

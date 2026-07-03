@@ -329,6 +329,8 @@ export default function RegisterPage({ onNavigate }: RegisterPageProps) {
           {/* Social */}
           <SocialAuthButtons label="Sign up" onNavigate={onNavigate} />
 
+
+
           {/* Login link */}
           <p className="text-center font-mono text-[11px] text-slate-500 mt-1">
             Already a cadet?{' '}

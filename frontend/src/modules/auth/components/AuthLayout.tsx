@@ -25,12 +25,12 @@ export default function AuthLayout({
   accentClass = 'bg-gradient-to-r from-indigo-600 to-cyan-500',
 }: AuthLayoutProps) {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center p-4 pt-24 pb-8 pointer-events-none overflow-y-auto">
+    <div className="relative z-20 flex items-center justify-center w-full min-h-screen p-4 py-24 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="w-full max-w-md pointer-events-auto my-auto"
+        className="w-full max-w-md my-auto"
       >
         {/* Card */}
         <div className="relative glass-panel-deep rounded-3xl border border-white/10 shadow-2xl shadow-black/60 overflow-hidden">
