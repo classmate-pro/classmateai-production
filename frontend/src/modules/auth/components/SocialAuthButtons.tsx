@@ -87,27 +87,27 @@ export default function SocialAuthButtons({ label, onNavigate }: SocialAuthProps
   }, [onNavigate]);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4 mt-2">
       {/* Divider */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-white/[0.08]" />
-        <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest">or continue with</span>
-        <div className="flex-1 h-px bg-white/[0.08]" />
+        <div className="flex-1 h-px bg-slate-200" />
+        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">or continue with</span>
+        <div className="flex-1 h-px bg-slate-200" />
       </div>
 
       {error && (
-        <p className="text-center font-mono text-[10px] text-red-400 mt-1">
+        <p className="text-center text-xs font-bold text-red-500 mt-1">
           {error}
         </p>
       )}
 
       <div className="w-full">
-        <div className="relative flex items-center justify-center h-[38px] w-full">
+        <div className="relative flex items-center justify-center h-[42px] w-full">
           <motion.button
             type="button"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full h-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-white text-xs font-mono hover:bg-white/[0.09] hover:border-white/20 transition-all pointer-events-none"
+            className="w-full h-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all pointer-events-none"
           >
             <GoogleIcon />
             <span>{label} with Google</span>

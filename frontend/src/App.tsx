@@ -6,10 +6,11 @@ import Navbar from './shared/components/Navbar';
 import ChatBot from './shared/components/ChatBot';
 
 // ── Canvas Module ────────────────────────────────────────────────────────────
-import { ThreeCanvas, ParallaxBackground, MathParticles } from './modules/canvas';
+import { NetworkBackground } from './modules/canvas';
 
 // ── Feature Modules ──────────────────────────────────────────────────────────
 import LandingModule  from './modules/landing';
+import TeamMemberPage from './modules/landing/TeamMemberPage';
 import LoginPage      from './modules/auth/LoginPage';
 import RegisterPage   from './modules/auth/RegisterPage';
 import PricingPage    from './modules/pricing';
@@ -21,6 +22,7 @@ import { usePointerParallax } from './hooks/usePointerParallax';
 
 export default function App() {
   const [activePage, setActivePage] = useState<AppPage>('home');
+  const [teamMemberSlug, setTeamMemberSlug] = useState<string | null>(null);
   const { parallaxRef } = usePointerParallax();
 
   const [settings, setSettings] = useState<CoreSettings>({
@@ -43,38 +45,55 @@ export default function App() {
     }
   }, []);
 
-  const isScrollable = activePage === 'home' || activePage === 'login' || activePage === 'register';
+  const isScrollable =
+    activePage === 'home' ||
+    activePage === 'login' ||
+    activePage === 'register' ||
+    activePage === 'team-member';
+
+  const handleNavigate = (page: AppPage) => {
+    setActivePage(page);
+    if (page !== 'team-member') setTeamMemberSlug(null);
+  };
+
+  const handleViewTeamMember = (slug: string) => {
+    setTeamMemberSlug(slug);
+    setActivePage('team-member');
+    window.scrollTo({ top: 0 });
+  };
 
   return (
     <div
-      className={`relative w-full bg-[#020617] text-white font-sans ${
+      className={`relative w-full text-slate-900 font-sans ${
         isScrollable ? 'min-h-screen' : 'h-screen overflow-hidden'
-      }`}
+      } ${activePage === 'home' ? 'bg-[#F0EBE1]' : 'bg-white'}`}
     >
-      <ParallaxBackground parallaxRef={parallaxRef} />
-      <MathParticles />
-      <ThreeCanvas settings={settings} parallaxRef={parallaxRef} />
+      {activePage !== 'home' && activePage !== 'login' && activePage !== 'register' && activePage !== 'team-member' && <NetworkBackground />}
 
       {activePage !== 'dashboard' && (
-        <Navbar activePage={activePage} onNavigate={setActivePage} />
+        <Navbar activePage={activePage} onNavigate={handleNavigate} />
       )}
 
       {/* ── Landing ── */}
       {activePage === 'home' && (
-        <LandingModule onNavigate={setActivePage} />
+        <LandingModule onNavigate={handleNavigate} onViewTeamMember={handleViewTeamMember} />
+      )}
+
+      {/* ── Team member detail ── */}
+      {activePage === 'team-member' && teamMemberSlug && (
+        <TeamMemberPage slug={teamMemberSlug} onNavigate={handleNavigate} />
       )}
 
       {/* ── Auth ── */}
-      {activePage === 'login'    && <LoginPage    onNavigate={setActivePage} />}
-      {activePage === 'register' && <RegisterPage onNavigate={setActivePage} />}
-      {activePage === 'dashboard' && <HudDashboard settings={settings} setSettings={setSettings} onNavigate={setActivePage} />}
+      {activePage === 'login'    && <LoginPage    onNavigate={handleNavigate} />}
+      {activePage === 'register' && <RegisterPage onNavigate={handleNavigate} />}
+      {activePage === 'dashboard' && <HudDashboard settings={settings} setSettings={setSettings} onNavigate={handleNavigate} />}
 
       {/* ── Core pages (now modules) ── */}
       {activePage === 'pricing' && <PricingPage color={settings.color} />}
       {activePage === 'contact' && <ContactPage color={settings.color} />}
 
-      {/* Scanline overlay */}
-      <div className="absolute inset-0 pointer-events-none moving-scanline z-50 mix-blend-screen opacity-65" />
+
 
       {/* AI Chatbot */}
       <ChatBot />
