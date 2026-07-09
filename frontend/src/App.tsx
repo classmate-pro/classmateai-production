@@ -16,6 +16,7 @@ import RegisterPage   from './modules/auth/RegisterPage';
 import PricingPage    from './modules/pricing';
 import ContactPage    from './modules/contact';
 import HudDashboard   from './modules/dashboard';
+import BlogPage       from './modules/blog/BlogPage';
 
 // ── Hooks & Utils ────────────────────────────────────────────────────────────
 import { usePointerParallax } from './hooks/usePointerParallax';
@@ -49,7 +50,8 @@ export default function App() {
     activePage === 'home' ||
     activePage === 'login' ||
     activePage === 'register' ||
-    activePage === 'team-member';
+    activePage === 'team-member' ||
+    activePage === 'blog';
 
   const handleNavigate = (page: AppPage) => {
     setActivePage(page);
@@ -66,9 +68,9 @@ export default function App() {
     <div
       className={`relative w-full text-slate-900 font-sans ${
         isScrollable ? 'min-h-screen' : 'h-screen overflow-hidden'
-      } ${activePage === 'home' ? 'bg-[#F0EBE1]' : 'bg-white'}`}
+      } ${activePage === 'home' ? 'bg-white' : 'bg-white'}`}
     >
-      {activePage !== 'home' && activePage !== 'login' && activePage !== 'register' && activePage !== 'team-member' && <NetworkBackground />}
+      {activePage !== 'home' && activePage !== 'login' && activePage !== 'register' && activePage !== 'team-member' && activePage !== 'blog' && <NetworkBackground />}
 
       {activePage !== 'dashboard' && (
         <Navbar activePage={activePage} onNavigate={handleNavigate} />
@@ -92,6 +94,7 @@ export default function App() {
       {/* ── Core pages (now modules) ── */}
       {activePage === 'pricing' && <PricingPage color={settings.color} />}
       {activePage === 'contact' && <ContactPage color={settings.color} />}
+      {activePage === 'blog' && <BlogPage onNavigate={handleNavigate} />}
 
 
 

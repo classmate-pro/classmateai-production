@@ -39,7 +39,7 @@ export default function LandingModule({ onNavigate, onViewTeamMember }: LandingM
       ref={scrollRef}
       className="landing-page absolute inset-0 z-10 overflow-y-auto overflow-x-hidden pointer-events-none bg-transparent"
     >
-      <LandingBackground />
+      <LandingBackground scrollRef={scrollRef} />
       <div className="min-h-full pointer-events-auto relative z-10">
         <HeroSection onNavigate={onNavigate} />
 

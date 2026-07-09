@@ -75,12 +75,12 @@ export default function ServicesSection() {
                 <service.icon className="w-4 h-4 text-slate-600 group-hover:text-emerald-600 transition-colors" strokeWidth={2} />
               </div>
               
-              <h3 className="text-base font-bold text-slate-900 mb-2">{service.title}</h3>
-              <p className="text-[13px] text-slate-500 leading-relaxed mb-4 flex-grow">{service.desc}</p>
+              <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
+              <p className="text-[15px] text-slate-500 leading-relaxed mb-6 flex-grow">{service.desc}</p>
               
               <div className="mt-auto pt-4 border-t border-slate-100/50 flex items-center justify-between">
-                <button className="text-[11px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-emerald-600 transition-colors flex items-center gap-1.5">
-                  Learn more <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                <button className="text-[13px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-emerald-600 transition-colors flex items-center gap-1.5 cursor-pointer">
+                  Learn more <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </LandingStaggerItem>

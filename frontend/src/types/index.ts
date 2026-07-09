@@ -2,7 +2,7 @@
 // Single source of truth for all TypeScript types used across modules.
 // Import from here: import { AppPage } from '../../types';
 
-export type AppPage = 'home' | 'login' | 'register' | 'pricing' | 'contact' | 'dashboard' | 'team-member';
+export type AppPage = 'home' | 'login' | 'register' | 'pricing' | 'contact' | 'dashboard' | 'team-member' | 'blog';
 
 export interface CoreSettings {
   color: 'cyan' | 'pink' | 'green' | 'amber';

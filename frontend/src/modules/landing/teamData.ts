@@ -14,47 +14,50 @@ export interface TeamMember {
   initials: string;
   linkedin: string;
   journey: JourneyStep[];
+  avatar?: string;
 }
 
 export const TEAM_MEMBERS: TeamMember[] = [
   {
-    slug: 'alex-rivera',
-    name: 'Alex Rivera',
+    slug: 'pravin-sarule',
+    name: 'Pravin Sarule',
     role: 'Founder & CEO',
     label: 'Founder',
-    tagline: 'Building Classmate AI to give every student their time back.',
-    initials: 'AR',
-    linkedin: '#',
+    tagline: 'Empowering students across the globe with intelligent, adaptive learning systems.',
+    initials: 'PS',
+    linkedin: 'https://linkedin.com/in/pravin-sarule-749138213',
+    avatar: '/pravin.jpg',
     bio: [
-      'Alex started Classmate AI after watching students — including his own younger siblings — spend more time managing deadlines than actually learning. He saw an opportunity to build technology that gives time back instead of taking it away.',
-      'Before Classmate AI, Alex spent years building AI products at scale and working closely with educators to understand what students truly need. Today, he leads a team united by one belief: every student deserves a smart partner that reduces workload and amplifies potential.',
+      'Pravin is the Founder and CEO of Classmate AI. An AI Engineer at heart, he built the platform to solve a challenge close to home: helping students cut through academic administrative stress and redirect their energy toward real, deep learning.',
+      'Driven by a vision to democratize cutting-edge AI for education in India and worldwide, Pravin leads the technology and product vision. He is committed to building intelligent systems that are accessible, intuitive, and serve as true catalysts for student success.',
     ],
     journey: [
-      { period: '2016', title: 'B.S. Computer Science', description: 'Graduated with focus on machine learning and human-computer interaction.' },
-      { period: '2017–20', title: 'Software Engineer, Ed-Tech', description: 'Built adaptive learning tools used by 200K+ students across North America.' },
-      { period: '2021–23', title: 'ML Lead, AI Platform', description: 'Scaled NLP systems for document understanding and intelligent scheduling.' },
-      { period: '2023', title: 'Founded Classmate AI', description: 'Launched the smart learning partner to automate assignments and study planning.' },
-      { period: '2024–Now', title: '2.4M+ Students Worldwide', description: 'Growing a global platform helping students save 12+ hours every week.' },
+      { period: '2018–22', title: 'B.E. Computer Science & Engineering', description: 'Graduated with a focus on machine learning and software architectures.' },
+      { period: '2022–23', title: 'AI Developer', description: 'Built and optimized deep learning models and custom NLP pipelines.' },
+      { period: '2023–24', title: 'AI Systems Architect', description: 'Designed scalable agentic workflows and intelligent scheduling systems.' },
+      { period: '2024', title: 'Founded Classmate AI', description: 'Launched the smart learning assistant to automate study planning and tutoring.' },
+      { period: '2024–Now', title: 'Scaling Globally', description: 'Empowering thousands of students daily with personalized, AI-driven learning companion.' },
     ],
   },
   {
-    slug: 'arjun-mehta',
-    name: 'Arjun Mehta',
-    role: 'Co-Founder & CTO',
+    slug: 'rutuja-dalal',
+    name: 'Rutuja Dalal',
+    role: 'Co-Founder',
     label: 'Co-Founder',
-    tagline: 'Architecting AI systems for personalized learning at global scale.',
-    initials: 'AM',
-    linkedin: '#',
+    tagline: 'Turning ambitious AI ideas into real products that transform how students learn.',
+    initials: 'RD',
+    linkedin: 'https://www.linkedin.com/in/rutuja-dalal-292514234',
+    avatar: '/rutuja.png',
     bio: [
-      'Arjun co-founded Classmate AI to solve the engineering challenges behind truly personalized education. He believes great AI should feel invisible — quietly handling the busywork so students can focus on understanding.',
-      'Previously, he led backend and ML infrastructure teams at high-growth startups, designing systems that processed millions of documents daily. At Classmate AI, he oversees the entire technical stack from model training to real-time tutoring interfaces.',
+      'Rutuja is the Co-Founder of Classmate AI. A passionate AI engineer and product builder, she co-created the platform to ensure that every student — regardless of background — has access to a smart, intelligent learning partner.',
+      'With deep roots in the Indian education ecosystem, Rutuja brings a ground-level understanding of student challenges. She drives the product and AI experience at Classmate AI, building systems that feel intuitive, empowering, and genuinely useful.',
     ],
     journey: [
-      { period: '2015', title: 'B.Tech, IIT Delhi', description: 'Specialized in distributed systems and artificial intelligence.' },
-      { period: '2016–19', title: 'Backend Engineer, FinTech', description: 'Built low-latency data pipelines serving 1M+ daily transactions.' },
-      { period: '2019–22', title: 'Staff Engineer, AI Startup', description: 'Led a team of 12 building document intelligence APIs.' },
-      { period: '2023', title: 'Co-Founded Classmate AI', description: 'Designed the core AI architecture powering assignment and tutor features.' },
-      { period: '2024–Now', title: 'Scaling Global Infrastructure', description: 'Expanding platform reliability across 190+ countries.' },
+      { period: '2018–22', title: 'B.E. Computer Science & Engineering', description: 'Graduated with a focus on AI, data engineering, and full-stack development.' },
+      { period: '2022–23', title: 'AI Engineer', description: 'Developed intelligent automation pipelines and conversational AI systems.' },
+      { period: '2023–24', title: 'AI Product Designer', description: 'Designed and shipped AI-driven user experiences for educational platforms.' },
+      { period: '2024', title: 'Co-Founded Classmate AI', description: 'Co-built the smart learning assistant to empower students with AI-powered tools.' },
+      { period: '2024–Now', title: 'Growing the Vision', description: 'Driving product innovation and AI research to expand student impact globally.' },
     ],
   },
   {

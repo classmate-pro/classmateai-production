@@ -63,10 +63,10 @@ export default function HeroSection({ onNavigate }: HeroSectionProps) {
             Get Started Free
           </button>
           <button
-            onClick={() => {}}
+            onClick={() => onNavigate('login')}
             className="landing-btn landing-btn-secondary w-full sm:w-auto"
           >
-            Watch Demo <ArrowRight className="w-4 h-4" />
+            Sign In <ArrowRight className="w-4 h-4" />
           </button>
         </motion.div>
       </motion.div>

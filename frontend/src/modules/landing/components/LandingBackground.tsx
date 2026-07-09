@@ -1,9 +1,11 @@
-export default function LandingBackground() {
-  return (
-    <div
-      className="fixed inset-0 z-0 pointer-events-none"
-      style={{ background: 'linear-gradient(180deg, #FCFBF8 0%, #F8F5EF 100%)' }}
-      aria-hidden="true"
-    />
-  );
+import { VortexBackground } from '../../canvas';
+
+interface LandingBackgroundProps {
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
+}
+
+export default function LandingBackground({ scrollRef }: LandingBackgroundProps) {
+  // The VortexBackground renderer itself sets a white clear color,
+  // so no separate background div is needed.
+  return <VortexBackground scrollRef={scrollRef} />;
 }

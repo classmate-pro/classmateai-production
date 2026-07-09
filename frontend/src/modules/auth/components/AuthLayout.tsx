@@ -1,7 +1,6 @@
 // ─── Auth Module: Shared Layout Wrapper ─────────────────────────────────────
 import { ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { Check, Star } from 'lucide-react';
 import { AppPage } from '../../../types';
 
 interface AuthLayoutProps {
@@ -20,100 +19,89 @@ export default function AuthLayout({
   children,
   title,
   subtitle,
-  icon,
   headline,
   headlineHighlight,
   description,
-  bullets,
 }: AuthLayoutProps) {
   return (
-    <div
-      className="min-h-screen w-full"
-      style={{ background: 'linear-gradient(180deg, #FCFBF8 0%, #F8F5EF 100%)' }}
-    >
-      <div className="landing-container grid lg:grid-cols-2 gap-12 lg:gap-20 pt-28 lg:pt-32 pb-16 lg:pb-20 items-start">
+    <div className="h-screen w-full overflow-hidden relative bg-white flex">
 
-        {/* Left: Branding */}
-        <div className="hidden lg:flex flex-col lg:pt-4">
-          <span className="landing-eyebrow self-start mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            Classmate AI
-          </span>
+      {/* ══ LEFT PANEL — white ══ */}
+      <div className="hidden lg:flex w-[38%] flex-col justify-center px-16 bg-white z-10">
+        <h2 className="text-[32px] font-extrabold uppercase leading-tight text-emerald-500">
+          {headline} {headlineHighlight}!
+        </h2>
+        <p className="mt-4 text-[15px] text-slate-500 leading-relaxed max-w-[260px]">
+          {description}
+        </p>
+      </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-5xl xl:text-6xl font-extrabold tracking-tight leading-[1.05] text-slate-900"
-          >
-            {headline}<br />
-            <span className="text-emerald-500">{headlineHighlight}</span>
-          </motion.h1>
-
-          <p className="mt-8 text-base text-slate-600 max-w-md leading-relaxed">
-            {description}
-          </p>
-
-          <ul className="mt-10 space-y-4">
-            {bullets.map((b) => (
-              <li key={b} className="flex items-center gap-3">
-                <span className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                  <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={3} />
-                </span>
-                <span className="text-[15px] font-medium text-slate-700">{b}</span>
-              </li>
-            ))}
-          </ul>
-
-          {/* Trust strip */}
-          <div className="mt-12 flex items-center gap-6 border-t border-slate-200/70 pt-8">
-            <div>
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <p className="text-xs text-slate-500 mt-1.5">Loved by 2.4M+ students</p>
-            </div>
-            <div className="h-9 w-px bg-slate-200" />
-            <div>
-              <p className="text-lg font-extrabold text-slate-900 leading-none">190+</p>
-              <p className="text-xs text-slate-500 mt-1.5">Countries worldwide</p>
-            </div>
-          </div>
-
-          <p className="mt-auto pt-16 text-xs text-slate-400">
-            © 2026 Classmate AI. classmateai.com
-          </p>
-        </div>
-
-        {/* Right: Form card */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="relative w-full max-w-md mx-auto lg:mx-0 lg:ml-auto"
+      {/* ══ WAVE DIVIDER — positioned between panels ══ */}
+      <div className="hidden lg:block absolute left-[35%] top-0 h-full w-[80px] z-20 pointer-events-none">
+        <svg
+          viewBox="0 0 80 900"
+          preserveAspectRatio="none"
+          className="h-full w-full"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Soft glow behind card */}
-          <div
-            className="absolute -inset-6 -z-10 rounded-[40px] blur-2xl opacity-60 pointer-events-none"
-            style={{ background: 'radial-gradient(60% 60% at 50% 0%, rgba(16,185,129,0.10), rgba(16,185,129,0) 70%)' }}
+          <path
+            d="M 80,0 
+               C 80,0 20,100 50,225 
+               C 80,350 10,425 40,500 
+               C 70,575 10,650 50,775 
+               C 70,838 80,900 80,900 
+               L 80,0 Z"
+            fill="#059669"
           />
+        </svg>
+      </div>
 
-          <div className="bg-white rounded-3xl border border-slate-200/70 shadow-[0_24px_60px_-24px_rgba(15,23,42,0.18)] p-8 sm:p-10">
-            {/* Header */}
-            <div className="mb-8">
-              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                {icon} {title}
-              </h2>
-              <p className="text-sm text-slate-500 mt-3 leading-relaxed max-w-sm">
-                {subtitle}
-              </p>
-            </div>
+      {/* ══ RIGHT PANEL — emerald gradient ══ */}
+      <div
+        className="flex-1 flex flex-col items-center justify-center relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(145deg, #065f46 0%, #059669 40%, #10b981 100%)',
+        }}
+      >
+        {/* Scattered decorative icons (dots pattern like screenshot) */}
+        {[
+          { top: '8%',  left: '12%', size: 38 },
+          { top: '18%', left: '72%', size: 30 },
+          { top: '55%', left: '8%',  size: 44 },
+          { top: '70%', left: '65%', size: 36 },
+          { top: '82%', left: '30%', size: 32 },
+          { top: '40%', left: '85%', size: 28 },
+          { top: '90%', left: '80%', size: 40 },
+        ].map((pos, i) => (
+          <svg
+            key={i}
+            className="absolute opacity-10"
+            style={{ top: pos.top, left: pos.left, width: pos.size, height: pos.size }}
+            viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5"
+          >
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        ))}
 
-            {/* Page content */}
-            {children}
+        {/* Form card — no background box, just centered */}
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+          className="w-full max-w-[360px] px-2"
+        >
+          {/* Title */}
+          <div className="text-center mb-7">
+            <h2 className="text-[26px] font-extrabold text-white uppercase tracking-[0.15em]">
+              {title}
+            </h2>
+            <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">
+              {subtitle}
+            </p>
           </div>
+
+          {/* Form fields */}
+          {children}
         </motion.div>
       </div>
     </div>
