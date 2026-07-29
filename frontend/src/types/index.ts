@@ -2,7 +2,7 @@
 // Single source of truth for all TypeScript types used across modules.
 // Import from here: import { AppPage } from '../../types';
 
-export type AppPage = 'home' | 'login' | 'register' | 'pricing' | 'contact' | 'dashboard' | 'team-member' | 'blog';
+export type AppPage = 'home' | 'login' | 'register' | 'pricing' | 'contact' | 'dashboard' | 'team-member' | 'blog' | 'admin-login';
 
 export interface CoreSettings {
   color: 'cyan' | 'pink' | 'green' | 'amber';
@@ -72,4 +72,27 @@ export interface RegisterFormData {
   confirmPassword: string;
   role: 'student' | 'educator';
   agreeTerms: boolean;
+}
+
+// Admin dashboard types
+export type UserRole = 'user' | 'educator' | 'super_admin';
+
+export interface AdminUser {
+  id: string;
+  full_name: string;
+  email: string;
+  role: UserRole;
+  provider: string;
+  is_active: boolean;
+  is_email_verified: boolean;
+  last_login_at: string | null;
+  created_at: string;
+}
+
+export interface AdminStats {
+  total: number;
+  active: number;
+  inactive: number;
+  newLast7Days: number;
+  byRole: Record<string, number>;
 }

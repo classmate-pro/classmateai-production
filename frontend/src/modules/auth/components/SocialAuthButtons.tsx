@@ -1,17 +1,19 @@
 // ─── Auth Module: Social Auth Buttons ───────────────────────────────────────
-import { useEffect, useRef, useState } from 'react';
+// Uses backend-redirect OAuth flow — NO Google SDK required on the frontend.
+// Clicking "Sign in with Google" redirects to the backend which handles the
+// full OAuth dance and redirects back with ?token=<jwt>&refreshToken=<jwt>.
 import { motion } from 'motion/react';
-import api from '../../../shared/api';
 import { AppPage } from '../../../types';
+import { BACKEND_GOOGLE_AUTH_URL } from '../../../shared/api';
 
 interface SocialAuthProps {
   label: 'Sign in' | 'Sign up';
   onNavigate?: (page: AppPage) => void;
 }
 
-// Google SVG icon
+// Official Google "G" SVG logo
 const GoogleIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true">
+  <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0" aria-hidden="true">
     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -19,108 +21,51 @@ const GoogleIcon = () => (
   </svg>
 );
 
-// GitHub SVG icon
-const GithubIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true">
-    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-  </svg>
-);
-
-export default function SocialAuthButtons({ label, onNavigate }: SocialAuthProps) {
-  const googleBtnRef = useRef<HTMLDivElement>(null);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const clientId = process.env.GOOGLE_CLIENT_ID || 'your_google_client_id_here';
-
-    const initializeGoogleSignIn = () => {
-      const g = (window as any).google;
-      if (g && g.accounts && g.accounts.id) {
-        g.accounts.id.initialize({
-          client_id: clientId,
-          callback: async (response: any) => {
-            try {
-              setError('');
-              const res = await api.post('/google', {
-                idToken: response.credential,
-              });
-
-              if (res.data.success) {
-                localStorage.setItem('accessToken', res.data.accessToken);
-                if (onNavigate) {
-                  onNavigate('dashboard');
-                } else {
-                  window.location.reload();
-                }
-              } else {
-                setError(res.data.message || 'Google Sign-In failed.');
-              }
-            } catch (err: any) {
-              setError(
-                err.response?.data?.message || err.message || 'An error occurred during Google Auth.'
-              );
-            }
-          },
-        });
-
-        if (googleBtnRef.current) {
-          g.accounts.id.renderButton(googleBtnRef.current, {
-            type: 'standard',
-            theme: 'outline',
-            size: 'large',
-            width: googleBtnRef.current.clientWidth || 250,
-          });
-        }
-      }
-    };
-
-    // Retry initialization if script loads late
-    const interval = setInterval(() => {
-      const g = (window as any).google;
-      if (g && g.accounts && g.accounts.id) {
-        initializeGoogleSignIn();
-        clearInterval(interval);
-      }
-    }, 300);
-
-    return () => clearInterval(interval);
-  }, [onNavigate]);
+/**
+ * Handles Google OAuth via backend redirect.
+ *
+ * Flow:
+ *   1. User clicks "Sign in with Google"
+ *   2. Browser redirects to: http://localhost:5001/auth/google
+ *   3. Backend performs OAuth with Google, then redirects back to:
+ *      http://localhost:3000/?token=<access>&refreshToken=<refresh>
+ *   4. App.tsx useEffect detects ?token=, saves both tokens to localStorage,
+ *      cleans the URL, and navigates to the dashboard.
+ */
+export default function SocialAuthButtons({ label }: SocialAuthProps) {
+  const handleGoogleSignIn = () => {
+    window.location.href = BACKEND_GOOGLE_AUTH_URL;
+  };
 
   return (
-    <div className="space-y-4 mt-2">
+    <div className="space-y-3 mt-1">
       {/* Divider */}
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-slate-200" />
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">or continue with</span>
+        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">
+          or continue with
+        </span>
         <div className="flex-1 h-px bg-slate-200" />
       </div>
 
-      {error && (
-        <p className="text-center text-xs font-bold text-red-500 mt-1">
-          {error}
-        </p>
-      )}
-
-      <div className="w-full">
-        <div className="relative flex items-center justify-center h-[42px] w-full">
-          <motion.button
-            type="button"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full h-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all pointer-events-none"
-          >
-            <GoogleIcon />
-            <span>{label} with Google</span>
-          </motion.button>
-          
-          {/* Overlay official invisible Google Sign-in button */}
-          <div 
-            ref={googleBtnRef} 
-            className="absolute inset-0 opacity-0 cursor-pointer overflow-hidden z-10 [&_iframe]:w-full [&_iframe]:h-full"
-            style={{ width: '100%', height: '100%' }}
-          />
-        </div>
-      </div>
+      {/* Google Sign-In button — white card, slate border, dark text */}
+      <motion.button
+        id="google-signin-btn"
+        type="button"
+        onClick={handleGoogleSignIn}
+        whileHover={{ scale: 1.015, boxShadow: '0 4px 16px rgba(0,0,0,0.10)' }}
+        whileTap={{ scale: 0.975 }}
+        className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-white text-slate-700 text-[14px] font-semibold transition-all"
+        style={{
+          border: '1.5px solid #e2e8f0',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+        }}
+        aria-label={`${label} with Google`}
+      >
+        <GoogleIcon />
+        <span>{label} with Google</span>
+      </motion.button>
     </div>
   );
 }
+
