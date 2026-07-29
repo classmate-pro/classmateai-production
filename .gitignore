@@ -6,3 +6,11 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Ignore backend services in the frontend-only repository
+apis/
+auth-service/
+document-ai-service/
+notes-service/
+gcs-cors.json
+
