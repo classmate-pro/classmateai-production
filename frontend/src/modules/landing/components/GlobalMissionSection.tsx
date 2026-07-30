@@ -55,16 +55,16 @@ export default function GlobalMissionSection() {
 
           {/* Right Column: Language Card */}
           <div className="relative">
-            <div className="bg-white border border-slate-200 shadow-2xl rounded-[32px] p-10 relative z-10 overflow-hidden group">
+            <div className="bg-white border border-slate-200 shadow-2xl rounded-[32px] p-6 sm:p-10 relative z-10 overflow-hidden group">
               <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
               
-              <div className="flex justify-between items-start mb-10">
+              <div className="flex flex-wrap justify-between items-start gap-4 mb-10">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-black flex items-center justify-center shadow-md">
+                  <div className="w-14 h-14 rounded-2xl bg-black flex items-center justify-center shadow-md shrink-0">
                     <Globe className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-extrabold text-[#0A0A0A] leading-tight tracking-tight">40+ Languages</h3>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-[#0A0A0A] leading-tight tracking-tight">40+ Languages</h3>
                     <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">Native AI understanding</p>
                   </div>
                 </div>
@@ -82,17 +82,17 @@ export default function GlobalMissionSection() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-slate-100 text-center">
+              <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-8 border-t border-slate-100 text-center">
                 <div>
-                  <p className="text-4xl font-extrabold text-[#0A0A0A] tracking-tight">190+</p>
+                  <p className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-tight">190+</p>
                   <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-[0.2em] mt-2">Countries</p>
                 </div>
                 <div>
-                  <p className="text-4xl font-extrabold text-[#0A0A0A] tracking-tight">2.4M</p>
+                  <p className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-tight">2.4M</p>
                   <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-[0.2em] mt-2">Students</p>
                 </div>
                 <div>
-                  <p className="text-4xl font-extrabold text-emerald-500 tracking-tight">24/7</p>
+                  <p className="text-3xl sm:text-4xl font-extrabold text-emerald-500 tracking-tight">24/7</p>
                   <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-[0.2em] mt-2">Support</p>
                 </div>
               </div>

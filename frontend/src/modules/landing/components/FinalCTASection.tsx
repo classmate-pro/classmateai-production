@@ -14,7 +14,7 @@ export default function FinalCTASection({ onNavigate }: FinalCTASectionProps) {
       viewport={{ once: true }}
       className="landing-container text-center landing-section-pad relative z-10"
     >
-      <div className="bg-[#ebdcc0]/30 rounded-[24px] p-10 md:p-16 border border-[#ebdcc0] relative flex flex-col items-center">
+      <div className="bg-[#ebdcc0]/30 rounded-[24px] p-6 sm:p-10 md:p-16 border border-[#ebdcc0] relative flex flex-col items-center">
 
         <div className="relative z-10 max-w-2xl mx-auto">
           <p className="text-[11px] font-bold tracking-[0.2em] text-emerald-600 uppercase mb-4">

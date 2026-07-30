@@ -1,4 +1,4 @@
-import { Brain, Calendar, BookOpen, Users, BarChart3, Zap } from 'lucide-react';
+import { Brain, Calendar, BookOpen, Users, BarChart3 } from 'lucide-react';
 
 export const AI_QUOTES = [
   {
@@ -41,12 +41,6 @@ export const SERVICES = [
     title: '24/7 AI Tutor',
     desc: 'Instant explanations in any subject, any language. Ask questions at 2 AM and get real answers.',
     color: 'pink',
-  },
-  {
-    icon: Zap,
-    title: 'Research & Citation Hub',
-    desc: 'Find credible sources, generate bibliographies, and validate facts in seconds — not hours.',
-    color: 'amber',
   },
   {
     icon: Users,

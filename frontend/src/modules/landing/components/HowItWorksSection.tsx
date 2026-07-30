@@ -62,13 +62,16 @@ export default function HowItWorksSection() {
                 )}
                 
                 {/* Node & Icon Container */}
-                <div className="relative mb-8 flex flex-col items-center md:items-start w-full">
-                  <div className="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-200 flex items-center justify-center transform transition-transform group-hover:scale-110 group-hover:border-emerald-200 z-10 relative">
-                    <step.icon className="w-6 h-6 text-slate-800 group-hover:text-emerald-600 transition-colors" strokeWidth={2.5} />
-                  </div>
-                  {/* Step Number Badge */}
-                  <div className="absolute -top-3 -right-2 md:left-12 md:-top-3 w-8 h-8 bg-black text-white rounded flex items-center justify-center text-[11px] font-extrabold tracking-widest z-20 shadow-md">
-                    {step.num}
+                <div className="mb-8 flex flex-col items-center md:items-start w-full">
+                  {/* Badge anchors to the icon box so it stays attached when the column is centered on mobile */}
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-200 flex items-center justify-center transform transition-transform group-hover:scale-110 group-hover:border-emerald-200">
+                      <step.icon className="w-6 h-6 text-slate-800 group-hover:text-emerald-600 transition-colors" strokeWidth={2.5} />
+                    </div>
+                    {/* Step Number Badge */}
+                    <div className="absolute -top-3 -right-3 w-8 h-8 bg-black text-white rounded flex items-center justify-center text-[11px] font-extrabold tracking-widest z-20 shadow-md">
+                      {step.num}
+                    </div>
                   </div>
                 </div>
 

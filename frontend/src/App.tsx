@@ -20,6 +20,7 @@ import ContactPage    from './modules/contact';
 import HudDashboard   from './modules/dashboard';
 import BlogPage       from './modules/blog/BlogPage';
 import AdminLoginPage from './modules/admin/AdminLoginPage';
+import InfoPage, { isInfoPage } from './modules/info';
 
 // ── Hooks & Utils ────────────────────────────────────────────────────────────
 import { usePointerParallax } from './hooks/usePointerParallax';
@@ -114,7 +115,8 @@ export default function App() {
     activePage === 'login' ||
     activePage === 'register' ||
     activePage === 'team-member' ||
-    activePage === 'blog';
+    activePage === 'blog' ||
+    isInfoPage(activePage);
 
   const handleNavigate = (page: AppPage) => {
     setActivePage(page);
@@ -133,11 +135,11 @@ export default function App() {
     <div
       className={`relative w-full font-sans ${
         isAuthPage
-          ? 'h-screen overflow-hidden'
-          : isScrollable ? 'min-h-screen text-slate-900 bg-white' : 'h-screen overflow-hidden text-slate-900 bg-white'
+          ? 'min-h-dvh'
+          : isScrollable ? 'min-h-dvh text-slate-900 bg-white' : 'h-dvh overflow-hidden text-slate-900 bg-white'
       }`}
     >
-      {!isAuthPage && activePage !== 'home' && activePage !== 'team-member' && activePage !== 'blog' && <NetworkBackground />}
+      {!isAuthPage && activePage !== 'home' && activePage !== 'team-member' && activePage !== 'blog' && !isInfoPage(activePage) && <NetworkBackground />}
 
       {/* Navbar: hide on auth pages AND dashboard */}
       {!isAuthPage && activePage !== 'dashboard' && (
@@ -167,6 +169,9 @@ export default function App() {
       {activePage === 'pricing' && <PricingPage color={settings.color} />}
       {activePage === 'contact' && <ContactPage color={settings.color} />}
       {activePage === 'blog' && <BlogPage onNavigate={handleNavigate} />}
+
+      {/* ── Company & legal pages (footer links) ── */}
+      {isInfoPage(activePage) && <InfoPage page={activePage} onNavigate={handleNavigate} />}
 
 
       {/* AI Chatbot — hidden on auth pages */}

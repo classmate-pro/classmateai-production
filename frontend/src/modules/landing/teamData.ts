@@ -32,11 +32,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
       'Driven by a vision to democratize cutting-edge AI for education in India and worldwide, Pravin leads the technology and product vision. He is committed to building intelligent systems that are accessible, intuitive, and serve as true catalysts for student success.',
     ],
     journey: [
-      { period: '2018–22', title: 'B.E. Computer Science & Engineering', description: 'Graduated with a focus on machine learning and software architectures.' },
-      { period: '2022–23', title: 'AI Developer', description: 'Built and optimized deep learning models and custom NLP pipelines.' },
-      { period: '2023–24', title: 'AI Systems Architect', description: 'Designed scalable agentic workflows and intelligent scheduling systems.' },
+      { period: '2021–25', title: 'B.Tech AIML', description: 'Graduated with a focus on machine learning and software architectures.' },
       { period: '2024', title: 'Founded Classmate AI', description: 'Launched the smart learning assistant to automate study planning and tutoring.' },
-      { period: '2024–Now', title: 'Scaling Globally', description: 'Empowering thousands of students daily with personalized, AI-driven learning companion.' },
+      { period: '2025–Present', title: 'AI Developer', description: 'Built and optimized deep learning models and custom NLP pipelines.' },
+      { period: '2026–Now', title: 'Scaling Globally', description: 'Empowering thousands of students daily with personalized, AI-driven learning companion.' },
     ],
   },
   {
@@ -53,11 +52,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
       'With deep roots in the Indian education ecosystem, Rutuja brings a ground-level understanding of student challenges. She drives the product and AI experience at Classmate AI, building systems that feel intuitive, empowering, and genuinely useful.',
     ],
     journey: [
-      { period: '2018–22', title: 'B.E. Computer Science & Engineering', description: 'Graduated with a focus on AI, data engineering, and full-stack development.' },
-      { period: '2022–23', title: 'AI Engineer', description: 'Developed intelligent automation pipelines and conversational AI systems.' },
-      { period: '2023–24', title: 'AI Product Designer', description: 'Designed and shipped AI-driven user experiences for educational platforms.' },
+      { period: '2021–25', title: 'B.Tech Computer Science', description: 'Graduated with a focus on AI, data engineering, and full-stack development.' },
       { period: '2024', title: 'Co-Founded Classmate AI', description: 'Co-built the smart learning assistant to empower students with AI-powered tools.' },
-      { period: '2024–Now', title: 'Growing the Vision', description: 'Driving product innovation and AI research to expand student impact globally.' },
+      { period: '2025–Present', title: 'AI Engineer', description: 'Developed intelligent automation pipelines and conversational AI systems.' },
+      { period: '2026–Now', title: 'Growing the Vision', description: 'Driving product innovation and AI research to expand student impact globally.' },
     ],
   },
   {

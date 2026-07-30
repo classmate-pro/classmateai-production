@@ -90,11 +90,12 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
   };
 
   // Clean dark-on-white inputs — max readability on the white card
+  // 16px font size: anything smaller triggers iOS Safari's auto-zoom on focus
   const inputBase: React.CSSProperties = {
     width: '100%',
     borderRadius: '10px',
     padding: '11px 12px 11px 40px',
-    fontSize: '14px',
+    fontSize: '16px',
     color: '#0f172a',
     outline: 'none',
     transition: 'all 0.2s ease',

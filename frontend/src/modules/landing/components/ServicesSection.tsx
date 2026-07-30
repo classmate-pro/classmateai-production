@@ -1,4 +1,4 @@
-import { Sparkles, CalendarClock, MessageSquare, BookOpenCheck, Users, BarChart3, ArrowRight } from 'lucide-react';
+import { Sparkles, CalendarClock, MessageSquare, Users, BarChart3, ArrowRight } from 'lucide-react';
 import { LandingStaggerGrid, LandingStaggerItem } from './LandingReveal';
 
 const SERVICES = [
@@ -18,12 +18,6 @@ const SERVICES = [
     title: '24/7 AI Tutor',
     desc: 'Instant explanations in any subject, any language. Ask questions at 2 AM and get real answers.',
     icon: MessageSquare,
-    highlight: false,
-  },
-  {
-    title: 'Research & Citation Hub',
-    desc: 'Find credible sources, generate bibliographies, and validate facts in seconds — not hours.',
-    icon: BookOpenCheck,
     highlight: false,
   },
   {

@@ -13,7 +13,7 @@ export default function HeroSection({ onNavigate }: HeroSectionProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
-        className="landing-container flex min-h-[78vh] flex-col items-center justify-center text-center pt-[120px] pb-4"
+        className="landing-container flex min-h-[78svh] flex-col items-center justify-center text-center pt-[104px] md:pt-[120px] pb-4"
       >
         {/* Badge */}
         <motion.div

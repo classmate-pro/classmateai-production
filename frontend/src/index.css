@@ -38,6 +38,8 @@ html, body {
   isolation: isolate;
   background-color: #ffffff;
   color: #0f172a;
+  /* Decorative absolute elements (orbs, glows) must never cause sideways scroll on phones */
+  overflow-x: clip;
 }
 
 /* ── Custom emerald cursor ── */

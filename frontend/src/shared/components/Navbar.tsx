@@ -256,8 +256,10 @@ export default function Navbar({ activePage, onNavigate }: NavbarProps) {
             zIndex: 99,
             display: 'flex',
             flexDirection: 'column',
-            padding: '24px 32px',
+            padding: '24px',
             gap: '24px',
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {items.map((item) => (

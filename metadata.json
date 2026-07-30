@@ -1,6 +1,0 @@
-{
-  "name": "Sci-Fi Student Portal",
-  "description": "An immersive, interactive 3D sci-fi animated landing page for a student portal, featuring holographic 3D particle simulations, rotating data rings, and futuristic academic dashboards.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

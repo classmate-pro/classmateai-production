@@ -78,13 +78,13 @@ export default function AuthLayout({
 }: AuthLayoutProps) {
   return (
     <div
-      className="w-full min-h-screen flex flex-col lg:flex-row"
+      className="w-full min-h-dvh flex flex-col lg:flex-row"
       style={{ fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif" }}
     >
       {/* ══════════════════════════════════════════════════════
           LEFT PANEL — Clean white, brand info (desktop only)
          ══════════════════════════════════════════════════════ */}
-      <div className="hidden lg:flex flex-col justify-between w-[44%] min-h-screen bg-white px-10 xl:px-16 py-10 border-r border-slate-100 relative overflow-hidden">
+      <div className="hidden lg:flex flex-col justify-between w-[44%] min-h-dvh bg-white px-10 xl:px-16 py-10 border-r border-slate-100 relative overflow-hidden">
 
         {/* Dot grid texture */}
         <div
@@ -188,7 +188,7 @@ export default function AuthLayout({
           Lighter & brighter so all text is clearly visible
          ══════════════════════════════════════════════════════ */}
       <div
-        className="flex-1 flex flex-col min-h-screen relative overflow-hidden"
+        className="flex-1 flex flex-col min-h-dvh relative overflow-hidden"
         style={{
           /* Bright, saturated emerald — NOT dark */
           background: 'linear-gradient(145deg, #059669 0%, #10b981 50%, #34d399 100%)',
